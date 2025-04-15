@@ -1,9 +1,22 @@
 "use client"
-import React from "react";
+import React, { memo } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { User, Search } from "lucide-react";
+import { User } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
+
+// Memoize the NavLink component to prevent unnecessary re-renders
+const NavLink = memo(({ href, children, pathname }) => {
+  const isActive = pathname === href;
+  return (
+    <Link href={href} className={`hover:text-gray-900 transition cursor-pointer ${isActive ? 'text-orange-600 font-medium' : ''}`}>
+      {children}
+    </Link>
+  );
+});
+
+NavLink.displayName = 'NavLink';
 
 const Navbar = () => {
   const router = useRouter();
@@ -16,43 +29,51 @@ const Navbar = () => {
     <motion.nav 
       className="fixed bg-white z-999 w-full flex items-center justify-between px-6 md:px-16 lg:px-32 py-3 border-b border-gray-300 text-gray-700"
       initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }} // Reduced from 0.5
     >
-      <img
+      {/* Logo */}
+      <div 
         className="cursor-pointer w-8 md:w-4"
         onClick={() => router.push('/')}
-        src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png"
-        alt="logo"
-      />
+      >
+        <Image
+          src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png"
+          alt="logo"
+          width={32}
+          height={32}
+          priority
+        />
+      </div>
+
+      {/* Navigation Links - Optimized with memoized components */}
       <motion.div 
         className="flex items-center gap-4 lg:gap-8 max-md:hidden"
         initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }} // Reduced from 0.5
       >
-        <Link href="/" className={`hover:text-gray-900 transition cursor-pointer ${pathname === '/' ? 'text-orange-600 font-medium' : ''}`}>
-          Accueil
-        </Link>
-        <Link href="/all-products" className={`hover:text-gray-900 transition cursor-pointer ${pathname === '/all-products' ? 'text-orange-600 font-medium' : ''}`}>
-          Produits
-        </Link>
-        <Link href="/about" className={`hover:text-gray-900 transition cursor-pointer ${pathname === '/about' ? 'text-orange-600 font-medium' : ''}`}>
-          À propos
-        </Link>
-        <Link href="/contact" className={`hover:text-gray-900 transition cursor-pointer ${pathname === '/contact' ? 'text-orange-600 font-medium' : ''}`}>
-          Contact
-        </Link>
+        <NavLink href="/" pathname={pathname}>Accueil</NavLink>
+        <NavLink href="/all-products" pathname={pathname}>Produits</NavLink>
+        <NavLink href="/about" pathname={pathname}>À propos</NavLink>
+        <NavLink href="/contact" pathname={pathname}>Contact</NavLink>
 
-        {isSeller && <button onClick={() => router.push('/seller')} className={`text-xs border border-gray-200 px-4 py-1.5 rounded-full cursor-pointer hover:border-gray-300 transition-all hover:bg-gray-100 ${pathname === '/seller' ? 'text-orange-600 border-orange-600' : ''}`}>Boutique 🛍️</button>}
-
+        {isSeller && (
+          <button 
+            onClick={() => router.push('/seller')} 
+            className={`text-xs border border-gray-200 px-4 py-1.5 rounded-full cursor-pointer hover:border-gray-300 transition-all hover:bg-gray-100 ${pathname === '/seller' ? 'text-orange-600 border-orange-600' : ''}`}
+          >
+            Boutique 🛍️
+          </button>
+        )}
       </motion.div>
 
+      {/* User Profile */}
       <motion.ul 
         className="hidden md:flex items-center gap-4"
         initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, delay: 0.4 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }} // Reduced from 0.4
       >
         <button className="flex items-center gap-2 hover:text-gray-900 transition">
           <User className="w-4 h-4" />
@@ -60,13 +81,21 @@ const Navbar = () => {
         </button>
       </motion.ul>
 
+      {/* Mobile Menu */}
       <motion.div 
         className="flex items-center md:hidden gap-3"
         initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.3 }} // Reduced from 0.5
       >
-        {isSeller && <button onClick={() => router.push('/seller')} className={`text-xs border px-4 py-1.5 rounded-full ${pathname === '/seller' ? 'text-orange-600 border-orange-600' : ''}`}>Seller Dashboard</button>}
+        {isSeller && (
+          <button 
+            onClick={() => router.push('/seller')} 
+            className={`text-xs border px-4 py-1.5 rounded-full ${pathname === '/seller' ? 'text-orange-600 border-orange-600' : ''}`}
+          >
+            Seller Dashboard
+          </button>
+        )}
         <button className="flex items-center gap-2 hover:text-gray-900 transition">
           <User />
           Account
@@ -76,4 +105,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);
