@@ -40,14 +40,12 @@ const LoginPage = () => {
     <>
       <Navbar />
       <div className="min-h-screen flex items-center justify-center px-4 py-24 relative overflow-hidden">
-        {/* Background image */}
+        {/* Decorative background elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&fm=webp"
-            alt="Background" 
-            className="w-full h-full object-cover opacity-5"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-50/30 to-white/30 backdrop-blur-[2px]"></div>
+          <div className="absolute top-10 left-10 w-64 h-64 bg-orange-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+          <div className="absolute top-0 right-10 w-72 h-72 bg-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+          <div className="absolute -bottom-14 right-20 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         </div>
         
         <motion.div 
@@ -89,7 +87,7 @@ const LoginPage = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <Mail className="h-4 w-4 text-gray-400" />
                   </div>
                   <input
                     id="emailOrPhone"
@@ -99,7 +97,7 @@ const LoginPage = () => {
                     required
                     value={formData.emailOrPhone}
                     onChange={handleChange}
-                    className="pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                    className="text-sm pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
                     placeholder="exemple@email.com"
                   />
                 </div>
@@ -111,7 +109,7 @@ const LoginPage = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <Lock className="h-4 w-4 text-gray-400" />
                   </div>
                   <input
                     id="password"
@@ -121,7 +119,7 @@ const LoginPage = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="pl-10 pr-12 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                    className="text-sm pl-10 pr-12 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
                     placeholder="••••••••"
                   />
                   <button
