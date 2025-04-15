@@ -8,6 +8,8 @@ import Image from "next/image";
 
 // Memoize the NavLink component to prevent unnecessary re-renders
 const NavLink = memo(({ href, children, pathname }) => {
+  const router = useRouter();
+  
   const isActive = pathname === href;
   return (
     <Link href={href} className={`hover:text-gray-900 transition cursor-pointer ${isActive ? 'text-orange-600 font-medium' : ''}`}>
@@ -75,7 +77,7 @@ const Navbar = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }} // Reduced from 0.4
       >
-        <button className="flex items-center gap-2 hover:text-gray-900 transition">
+        <button onPress={()=> router.push('/login')} className="flex items-center gap-2 hover:text-gray-900 transition">
           <User className="w-4 h-4" />
           Profile
         </button>
@@ -89,16 +91,16 @@ const Navbar = () => {
         transition={{ duration: 0.3 }} // Reduced from 0.5
       >
         {isSeller && (
-          <button 
-            onClick={() => router.push('/seller')} 
-            className={`text-xs border px-4 py-1.5 rounded-full ${pathname === '/seller' ? 'text-orange-600 border-orange-600' : ''}`}
-          >
-            Seller Dashboard
-          </button>
+           <button 
+           onClick={() => router.push('/seller')} 
+           className={`text-xs border border-gray-200 px-4 py-1.5 rounded-full cursor-pointer hover:border-gray-300 transition-all hover:bg-gray-100 ${pathname === '/seller' ? 'text-orange-600 border-orange-600' : ''}`}
+         >
+           Boutique 🛍️
+         </button>
         )}
-        <button className="flex items-center gap-2 hover:text-gray-900 transition">
-          <User />
-          Account
+         <button onPress={()=> router.push('/login')} className="flex items-center gap-2 hover:text-gray-900 transition">
+          <User className="w-4 h-4" />
+          Profile
         </button>
       </motion.div>
     </motion.nav>
