@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from "react";
-import OrderSummary from "@/components/OrderSummary";
-import Navbar from "@/components/Navbar";
+import OrderSummary from "@/components/orderSummary";
+import Navbar from "@/components/navbar";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, MinusCircle, PlusCircle } from "lucide-react";
 import { motion } from "framer-motion";

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from "react";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 import Loading from "@/components/loading";
 import { Package } from "lucide-react";
 import { motion } from "framer-motion";
