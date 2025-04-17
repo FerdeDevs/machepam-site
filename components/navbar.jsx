@@ -62,7 +62,7 @@ const Navbar = () => {
 
         {isSeller && (
           <button 
-            onClick={() => router.push('/seller')} 
+            // onClick={() => router.push('/seller')} 
             className={`text-xs border border-gray-200 px-4 py-1.5 rounded-full cursor-pointer hover:border-gray-300 transition-all hover:bg-gray-100 ${pathname === '/seller' ? 'text-orange-600 border-orange-600' : ''}`}
           >
             Boutique 🛍️
@@ -92,7 +92,7 @@ const Navbar = () => {
       >
         {isSeller && (
            <button 
-           onClick={() => router.push('/seller')} 
+          //  onClick={() => router.push('/seller')} 
            className={`text-xs border border-gray-200 px-4 py-1.5 rounded-full cursor-pointer hover:border-gray-300 transition-all hover:bg-gray-100 ${pathname === '/seller' ? 'text-orange-600 border-orange-600' : ''}`}
          >
            Boutique 🛍️
