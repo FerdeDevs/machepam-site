@@ -1,6 +1,7 @@
 "use client"
 import React, { memo } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import Image from "next/image";
 
 // Memoized link component to prevent unnecessary re-renders
@@ -10,7 +11,7 @@ const FooterLink = memo(({ children, href, delay }) => (
     whileInView={{ opacity: 1, x: 0 }}
     transition={{ duration: 0.3, delay }}
   >
-    <a className="hover:underline transition" href={href}>{children}</a>
+    <Link className="hover:underline transition" href={href}>{children}</Link>
   </motion.li>
 ));
 
@@ -39,10 +40,10 @@ const Footer = () => {
             />
           </div>
           <p className="mt-6 text-sm">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Découvrez notre plateforme e-commerce leader, offrant une vaste sélection 
+            de produits à des prix compétitifs. Profitez d'une expérience d'achat 
+            fluide avec livraison rapide, service client premium et paiement 
+            sécurisé pour tous vos besoins shopping en ligne.
           </p>
         </motion.div>
 
@@ -55,10 +56,10 @@ const Footer = () => {
           <div>
             <h2 className="font-medium text-gray-900 mb-5">Company</h2>
             <ul className="text-sm space-y-2">
-              <FooterLink href="#" delay={0.3}>Home</FooterLink>
-              <FooterLink href="#" delay={0.4}>About us</FooterLink>
-              <FooterLink href="#" delay={0.5}>Contact us</FooterLink>
-              <FooterLink href="#" delay={0.6}>Privacy policy</FooterLink>
+              <FooterLink href="/" delay={0.3}>Accueil</FooterLink>
+              <FooterLink href="/all-products" delay={0.6}>Produits</FooterLink>
+              <FooterLink href="/about" delay={0.4}>À propos</FooterLink>
+              <FooterLink href="/contact" delay={0.5}>Contact</FooterLink>
             </ul>
           </div>
         </motion.div>
@@ -77,14 +78,15 @@ const Footer = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: 0.4 }}
               >
-                +1-234-567-890
+                +509 48203-087
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, x: -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: 0.5 }}
               >
-                contact@greatstack.dev
+                {/* contact@greatstack.dev */}
+                pferdelson@gmail.com
               </motion.p>
             </div>
           </div>
