@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -188,7 +187,6 @@ const LoginPage = () => {
           </motion.div>
         </motion.div>
       </div>
-      <Footer />
       
       {/* Add animation keyframes for the blob animation */}
       <style jsx global>{`

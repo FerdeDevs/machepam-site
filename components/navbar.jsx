@@ -77,7 +77,7 @@ const Navbar = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }} // Reduced from 0.4
       >
-        <button onPress={()=> router.push('/login')} className="flex items-center gap-2 hover:text-gray-900 transition">
+        <button onClick={()=> router.push('/login')} className="flex items-center gap-2 hover:text-gray-900 transition">
           <User className="w-4 h-4" />
           Profile
         </button>
@@ -98,7 +98,7 @@ const Navbar = () => {
            Boutique 🛍️
          </button>
         )}
-         <button onPress={()=> router.push('/login')} className="flex items-center gap-2 hover:text-gray-900 transition">
+         <button onClick={()=> router.push('/login')} className="flex items-center gap-2 hover:text-gray-900 transition">
           <User className="w-4 h-4" />
           Profile
         </button>
