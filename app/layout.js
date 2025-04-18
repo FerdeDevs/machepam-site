@@ -1,6 +1,6 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import BottomNav from "@/components/bottomNav";
+import ClientBottomNav from "@/components/clientBottomNav";
 
 const outfit = Outfit({
   weight: ["400", "500", "600", "700"],
@@ -61,7 +61,7 @@ export default function RootLayout({ children }) {
       className={`${outfit.className} antialiased`}
       >
         {children}
-        <BottomNav />
+        <ClientBottomNav />
       </body>
     </html>
   );

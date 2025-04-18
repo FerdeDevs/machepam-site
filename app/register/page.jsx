@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Mail, Phone, Lock, Eye, EyeOff, User } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/navbar';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -61,7 +63,7 @@ const RegisterPage = () => {
         </div>
         
         <motion.div 
-          className="p-8 rounded-xl border border-gray-200 max-w-2xl w-full relative z-10 backdrop-blur-sm bg-white/80"
+          className="p-8 rounded-xl border border-white max-w-2xl w-full relative z-10 backdrop-blur-2xl bg-white/50"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -136,46 +138,52 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            {/* Email, téléphone et sexe sur la même ligne */}
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-4 w-4 text-gray-400" />
-                  </div>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="text-sm pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                    placeholder="exemple@email.com"
-                  />
+            {/* Email sur une ligne séparée */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-4 w-4 text-gray-400" />
                 </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="text-sm pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                  placeholder="exemple@email.com"
+                />
               </div>
+            </div>
+
+            {/* Téléphone et sexe sur la même ligne */}
+            <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                   Téléphone
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Phone className="h-4 w-4 text-gray-400" />
-                  </div>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    required
+                  <PhoneInput
+                    country={'ht'}
                     value={formData.phone}
-                    onChange={handleChange}
-                    className="text-sm pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                    placeholder="+33 6 12 34 56 78"
+                    onChange={phone => setFormData(prev => ({ ...prev, phone }))}
+                    inputProps={{
+                      name: 'phone',
+                      required: true,
+                      id: 'phone',
+                      style: { borderRadius: '9999px', width: '100%' }
+                    }}
+                    containerClass="w-full"
+                    inputClass="text-sm py-2 w-full bg-gray-50 border border-gray-300 focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                    buttonClass="border border-gray-300 bg-gray-50"
+                    buttonStyle={{ borderRadius: '9999px 0 0 9999px' }}
+                    dropdownClass="bg-white"
+                    containerStyle={{ borderRadius: '9999px', width: '100%' }}
                   />
                 </div>
               </div>
@@ -192,7 +200,6 @@ const RegisterPage = () => {
                 >
                   <option value="male">Homme</option>
                   <option value="female">Femme</option>
-                  <option value="other">Autre</option>
                 </select>
               </div>
             </div>
@@ -273,7 +280,7 @@ const RegisterPage = () => {
               >
                 {isLoading ? (
                   <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
                 ) : 'S\'inscrire'}

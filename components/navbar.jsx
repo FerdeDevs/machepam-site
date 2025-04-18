@@ -25,7 +25,7 @@ const Navbar = () => {
   const pathname = usePathname();
   
   // Création d'un tableau pour simuler l'état isSeller
-  const [isSeller] = React.useState(true);
+  const [isSeller] = React.useState(false);
 
   return (
     <motion.nav 
