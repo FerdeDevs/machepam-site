@@ -1,21 +1,21 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
-import { useSearchParams } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { KeyRound, RefreshCw } from 'lucide-react';
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
+"use client";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
+import { KeyRound, RefreshCw } from "lucide-react";
+import Navbar from "@/components/navbar";
+import { API_URL } from "@/context/endpoint";
 
 const VerificationOTP = () => {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const email = searchParams.get('email');
+  const email = searchParams.get("email");
 
   // Handle OTP input change
   const handleChange = (element, index) => {
@@ -34,7 +34,7 @@ const VerificationOTP = () => {
 
   // Handle key events for backspace
   const handleKeyDown = (e, index) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       const prevInput = document.getElementById(`otp-${index - 1}`);
       if (prevInput) prevInput.focus();
     }
@@ -43,55 +43,55 @@ const VerificationOTP = () => {
   // Handle paste event
   const handlePaste = (e) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData('text');
+    const pastedData = e.clipboardData.getData("text");
     if (!/^\d+$/.test(pastedData)) return;
 
-    const pastedOtp = pastedData.slice(0, 6).split('');
+    const pastedOtp = pastedData.slice(0, 6).split("");
     const newOtp = [...otp];
-    
+
     pastedOtp.forEach((digit, index) => {
       if (index < 6) newOtp[index] = digit;
     });
-    
+
     setOtp(newOtp);
-    
+
     // Focus the next empty input or the last one
-    const lastFilledIndex = newOtp.findIndex(val => val === '') - 1;
+    const lastFilledIndex = newOtp.findIndex((val) => val === "") - 1;
     const focusIndex = lastFilledIndex >= 0 ? lastFilledIndex : 5;
     document.getElementById(`otp-${focusIndex}`).focus();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const otpValue = otp.join('');
-    
+    const otpValue = otp.join("");
+
     if (otpValue.length !== 6) {
-      toast.error('Veuillez entrer un code OTP complet');
+      toast.error("Veuillez entrer un code OTP complet");
       return;
     }
-    
+
     setIsSubmitting(true);
 
     try {
       // const response = await fetch(`http://localhost:5000/api/users/client/verify`, {
-      const response = await fetch(`https://machepam.onrender.com/api/users/client/verify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch(`${API_URL}/api/users/client/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
-          otp: otpValue  // Changed from otpCode to otpValue
+          otp: otpValue, // Changed from otpCode to otpValue
         }),
       });
 
       if (response.ok) {
-        toast.success('Vérification réussie !');
-        router.push('/login');
+        toast.success("Vérification réussie !");
+        router.push("/login");
       } else {
         const data = await response.json();
-        toast.error(data.message || 'OTP invalide ou expiré');
+        toast.error(data.message || "OTP invalide ou expiré");
       }
     } catch (error) {
-      toast.error('Erreur de connexion au serveur');
+      toast.error("Erreur de connexion au serveur");
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -101,25 +101,27 @@ const VerificationOTP = () => {
   const handleResendOTP = async () => {
     setResendDisabled(true);
     setCountdown(30);
-    
+
     try {
       // Replace with your API endpoint for resending OTP
-      const response = await fetch(`http://localhost:5000/api/users/client/resend-otp`, {
-      // const response = await fetch(`https://machepam.onrender.com/api/users/client/resend-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch(`${API_URL}/api/users/client/resend-otp`, {
+        // const response = await fetch(`https://machepam.onrender.com/api/users/client/resend-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         // Add any required data like email or phone
-        body: JSON.stringify({ /* email or phone */ }),
+        body: JSON.stringify({
+          /* email or phone */
+        }),
       });
 
       if (response.ok) {
-        toast.success('Nouveau code OTP envoyé !');
+        toast.success("Nouveau code OTP envoyé !");
       } else {
         const data = await response.json();
-        toast.error(data.message || 'Échec de l\'envoi du code OTP');
+        toast.error(data.message || "Échec de l'envoi du code OTP");
       }
     } catch (error) {
-      toast.error('Erreur de connexion au serveur');
+      toast.error("Erreur de connexion au serveur");
     }
   };
 
@@ -144,15 +146,15 @@ const VerificationOTP = () => {
           <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
           <div className="absolute -bottom-14 right-20 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         </div>
-        
-        <motion.div 
+
+        <motion.div
           className="p-8 rounded-xl border border-white max-w-md w-full relative z-10 backdrop-blur-2xl bg-white/50"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <div className="text-center mb-8">
-            <motion.div 
+            <motion.div
               className="flex justify-center mb-4"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -162,8 +164,8 @@ const VerificationOTP = () => {
                 <KeyRound size={32} className="text-orange-600" />
               </div>
             </motion.div>
-            
-            <motion.h1 
+
+            <motion.h1
               className="text-2xl font-semibold text-gray-800"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -171,17 +173,18 @@ const VerificationOTP = () => {
             >
               Vérification OTP
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-gray-500 mt-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
             >
-              Veuillez entrer le code à 6 chiffres envoyé à <span className='text-orange-600'>{email}</span> 
+              Veuillez entrer le code à 6 chiffres envoyé à{" "}
+              <span className="text-orange-600">{email}</span>
             </motion.p>
           </div>
 
-          <motion.form 
+          <motion.form
             onSubmit={handleSubmit}
             className="space-y-6"
             initial={{ opacity: 0 }}
@@ -203,7 +206,7 @@ const VerificationOTP = () => {
                   required
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.6 + (index * 0.1) }}
+                  transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
                 />
               ))}
             </div>
@@ -218,26 +221,31 @@ const VerificationOTP = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              {isSubmitting ? 'Vérification...' : 'Vérifier'}
+              {isSubmitting ? "Vérification..." : "Vérifier"}
             </motion.button>
 
-            <motion.div 
+            <motion.div
               className="text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.3, duration: 0.5 }}
             >
-              <p className="text-sm text-gray-600 mb-2">Vous n'avez pas reçu de code?</p>
+              <p className="text-sm text-gray-600 mb-2">
+                Vous n'avez pas reçu de code?
+              </p>
               <button
                 type="button"
                 onClick={handleResendOTP}
                 disabled={resendDisabled}
                 className="text-orange-600 hover:text-orange-700 text-sm font-medium flex items-center justify-center mx-auto disabled:text-gray-400"
               >
-                <RefreshCw size={16} className={`mr-1 ${resendDisabled ? 'animate-spin' : ''}`} />
-                {resendDisabled 
-                  ? `Réessayer dans ${countdown}s` 
-                  : 'Renvoyer le code OTP'}
+                <RefreshCw
+                  size={16}
+                  className={`mr-1 ${resendDisabled ? "animate-spin" : ""}`}
+                />
+                {resendDisabled
+                  ? `Réessayer dans ${countdown}s`
+                  : "Renvoyer le code OTP"}
               </button>
             </motion.div>
           </motion.form>
