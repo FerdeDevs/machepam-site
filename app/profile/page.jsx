@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/navbar";
 import { useAuth } from "@/context/AuthContext";
+import Footer from "@/components/footer";
 import { toast } from "react-toastify";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -29,15 +30,15 @@ const ProfilePage = () => {
   const [showAddressModal, setShowAddressModal] = useState(false);
 
   const [formData, setFormData] = useState({
-    firstName: user?.firstName || "John",
-    lastName: user?.lastName || "Doe",
-    email: user?.email || "john.doe@example.com",
-    phone: user?.phone || "50937123456",
-    gender: user?.gender || "male",
-    birthDate: user?.birthDate || "1990-01-01",
-    department: user?.department || "Ouest",
-    city: user?.city || "Port-au-Prince",
-    street: user?.street || "Rue Capois",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+    gender: user?.gender || "",
+    birthDate: user?.birthDate || "",
+    department: user?.department || "",
+    city: user?.city || "",
+    street: user?.street || "",
   });
 
   const handleImageChange = (e) => {
@@ -482,11 +483,42 @@ const ProfilePage = () => {
               </div>
             </motion.div>
           </div>
+
+          <div className="md:hidden mt-6">
+            {/* New Buttons for Favorites and Create Store */}
+            <button
+              onClick={() => router.push("/contact")}
+              className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 mb-3"
+            >
+              Contact
+            </button>
+            <button
+              onClick={() => router.push("/about")}
+              className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 mb-3"
+            >
+              À propos
+            </button>
+            <button
+              onClick={() => router.push("/favorites")}
+              className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 mb-3"
+            >
+              Mes Favoris
+            </button>
+            <button
+              onClick={() => router.push("/create-store")}
+              className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-xl text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none"
+            >
+              Créer sa Boutique 🛍️
+            </button>
+          </div>
         </motion.div>
       </div>
 
       {/* Address Modal */}
       <AddressModal />
+      <div className="hidden md:flex">
+        <Footer />
+      </div>
     </>
   );
 };

@@ -9,16 +9,35 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const fetchUserDetails = async (userId) => {
+    try {
+      const response = await fetch(`${API_URL}/api/users/client/${userId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+        localStorage.setItem("user", JSON.stringify(userData));
+      }
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
+
   useEffect(() => {
-    // Check for stored token on mount
     const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
+    
     if (token && storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
+        fetchUserDetails(parsedUser._id); // Fetch complete user details
 
-        // Check user role on initial load
         if (parsedUser.role === "admin") {
           toast.info("Vous êtes connecté en tant qu'administrateur");
         }
@@ -26,6 +45,7 @@ export function AuthProvider({ children }) {
         console.error("Failed to parse stored user data", error);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        setUser(null);
       }
     }
     setIsLoading(false);

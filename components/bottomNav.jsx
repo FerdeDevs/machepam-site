@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, ShoppingBag, Mail, Info } from 'lucide-react';
+import { Home, ShoppingBag, ShoppingCart, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const BottomNav = () => {
@@ -11,8 +11,8 @@ const BottomNav = () => {
   const navItems = [
     { name: 'Accueil', path: '/', icon: <Home size={20} /> },
     { name: 'Produits', path: '/all-products', icon: <ShoppingBag size={20} /> },
-    { name: 'Contact', path: '/contact', icon: <Mail size={20} /> },
-    { name: 'À propos', path: '/about', icon: <Info size={20} /> },
+    { name: 'Panier', path: '/cart', icon: <ShoppingCart size={20} /> },
+    { name: 'Profil', path: '/profile', icon: <User size={20} /> },
   ];
 
   return (

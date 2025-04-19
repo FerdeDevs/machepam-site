@@ -1,0 +1,43 @@
+import { Outfit } from "next/font/google";
+import "./globals.css";
+import ClientBottomNav from "@/components/clientBottomNav";
+import { AuthProvider } from "@/context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import RouteGuard from "@/components/RouteGuard";
+
+const outfit = Outfit({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-outfit",
+});
+
+export const metadata = {
+  title: "MachePam",
+  description:
+    "Your personal medication assistant - Track, manage and get reminders for your medications",
+};
+
+const publicRoutes = ["/login", "/register", "/verification-otp", "/about"];
+
+export default function RootLayout({ children }) {
+  const pathname = typeof window !== "undefined" ? window.location.pathname : "";
+  const isPublicRoute = publicRoutes.includes(pathname);
+
+  return (
+    <html lang="en">
+      <head>{/* Head content */}</head>
+      <body className={`${outfit.className} antialiased`}>
+        <AuthProvider>
+          {isPublicRoute ? (
+            children
+          ) : (
+            <RouteGuard>{children}</RouteGuard>
+          )}
+          <ClientBottomNav />
+          <ToastContainer />
+        </AuthProvider>
+      </body>
+    </html>
+  );
+}

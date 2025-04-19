@@ -58,7 +58,7 @@ const HeaderSlider = () => {
   };
 
   return (
-    <div className="slider-container relative w-full">
+    <div className="hidden md:block slider-container relative w-full">
       <Slider {...settings}>
         {sliderData.map((slide, index) => (
           <div key={slide.id} className="px-2">
