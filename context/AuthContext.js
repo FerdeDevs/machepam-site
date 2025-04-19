@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { API_URL } from "./endpoint";
+import { API_URL } from "./apiurl";
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {

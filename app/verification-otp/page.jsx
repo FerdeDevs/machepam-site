@@ -1,14 +1,41 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { KeyRound, RefreshCw } from "lucide-react";
 import Navbar from "@/components/navbar";
-import { API_URL } from "@/context/endpoint";
+import { API_URL } from "../../context/apiurl";
 
-const VerificationOTP = () => {
+// Loading component to show while the OTP verification component is loading
+const VerificationOTPLoading = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="p-8 rounded-xl border border-white max-w-md w-full relative z-10 backdrop-blur-2xl bg-white/50 text-center">
+        <div className="animate-pulse">
+          <div className="flex justify-center mb-4">
+            <div className="bg-orange-100 p-3 rounded-full">
+              <div className="w-8 h-8 bg-orange-300 rounded-full"></div>
+            </div>
+          </div>
+          <div className="h-6 bg-gray-200 rounded w-3/4 mx-auto mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded w-full mx-auto mb-6"></div>
+          <div className="flex justify-center space-x-2 mb-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="w-12 h-12 bg-gray-200 rounded-lg"></div>
+            ))}
+          </div>
+          <div className="h-10 bg-orange-200 rounded-full w-full mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// The actual OTP verification component
+const VerificationOTPContent = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(false);
@@ -110,7 +137,7 @@ const VerificationOTP = () => {
         headers: { "Content-Type": "application/json" },
         // Add any required data like email or phone
         body: JSON.stringify({
-          /* email or phone */
+          email: email
         }),
       });
 
@@ -136,121 +163,130 @@ const VerificationOTP = () => {
   }, [countdown]);
 
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen flex items-center justify-center px-4 py-24 relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-          <div className="absolute top-10 left-10 w-64 h-64 bg-orange-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-          <div className="absolute top-0 right-10 w-72 h-72 bg-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-          <div className="absolute -bottom-14 right-20 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        </div>
+    <div className="min-h-screen flex items-center justify-center px-4 py-24 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+        <div className="absolute top-10 left-10 w-64 h-64 bg-orange-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 right-10 w-72 h-72 bg-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div className="absolute -bottom-14 right-20 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+      </div>
 
-        <motion.div
-          className="p-8 rounded-xl border border-white max-w-md w-full relative z-10 backdrop-blur-2xl bg-white/50"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="text-center mb-8">
-            <motion.div
-              className="flex justify-center mb-4"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="bg-orange-100 p-3 rounded-full">
-                <KeyRound size={32} className="text-orange-600" />
-              </div>
-            </motion.div>
+      <motion.div
+        className="p-8 rounded-xl border border-white max-w-md w-full relative z-10 backdrop-blur-2xl bg-white/50"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="text-center mb-8">
+          <motion.div
+            className="flex justify-center mb-4"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="bg-orange-100 p-3 rounded-full">
+              <KeyRound size={32} className="text-orange-600" />
+            </div>
+          </motion.div>
 
-            <motion.h1
-              className="text-2xl font-semibold text-gray-800"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              Vérification OTP
-            </motion.h1>
-            <motion.p
-              className="text-gray-500 mt-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-            >
-              Veuillez entrer le code à 6 chiffres envoyé à{" "}
-              <span className="text-orange-600">{email}</span>
-            </motion.p>
-          </div>
-
-          <motion.form
-            onSubmit={handleSubmit}
-            className="space-y-6"
+          <motion.h1
+            className="text-2xl font-semibold text-gray-800"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <div className="flex justify-center space-x-2">
-              {otp.map((digit, index) => (
-                <motion.input
-                  key={index}
-                  id={`otp-${index}`}
-                  type="text"
-                  maxLength="1"
-                  value={digit}
-                  onChange={(e) => handleChange(e.target, index)}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  onPaste={index === 0 ? handlePaste : undefined}
-                  className="w-12 h-12 text-center text-xl font-semibold border border-gray-300 rounded-lg focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                  required
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
-                />
-              ))}
-            </div>
+            Vérification OTP
+          </motion.h1>
+          <motion.p
+            className="text-gray-500 mt-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            Veuillez entrer le code à 6 chiffres envoyé à{" "}
+            <span className="text-orange-600">{email}</span>
+          </motion.p>
+        </div>
 
-            <motion.button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-orange-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.2 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {isSubmitting ? "Vérification..." : "Vérifier"}
-            </motion.button>
+        <motion.form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <div className="flex justify-center space-x-2">
+            {otp.map((digit, index) => (
+              <motion.input
+                key={index}
+                id={`otp-${index}`}
+                type="text"
+                maxLength="1"
+                value={digit}
+                onChange={(e) => handleChange(e.target, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                onPaste={index === 0 ? handlePaste : undefined}
+                className="w-12 h-12 text-center text-xl font-semibold border border-gray-300 rounded-lg focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                required
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
+              />
+            ))}
+          </div>
 
-            <motion.div
-              className="text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.3, duration: 0.5 }}
+          <motion.button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-orange-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.2 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {isSubmitting ? "Vérification..." : "Vérifier"}
+          </motion.button>
+
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.3, duration: 0.5 }}
+          >
+            <p className="text-sm text-gray-600 mb-2">
+              Vous n'avez pas reçu de code?
+            </p>
+            <button
+              type="button"
+              onClick={handleResendOTP}
+              disabled={resendDisabled}
+              className="text-orange-600 hover:text-orange-700 text-sm font-medium flex items-center justify-center mx-auto disabled:text-gray-400"
             >
-              <p className="text-sm text-gray-600 mb-2">
-                Vous n'avez pas reçu de code?
-              </p>
-              <button
-                type="button"
-                onClick={handleResendOTP}
-                disabled={resendDisabled}
-                className="text-orange-600 hover:text-orange-700 text-sm font-medium flex items-center justify-center mx-auto disabled:text-gray-400"
-              >
-                <RefreshCw
-                  size={16}
-                  className={`mr-1 ${resendDisabled ? "animate-spin" : ""}`}
-                />
-                {resendDisabled
-                  ? `Réessayer dans ${countdown}s`
-                  : "Renvoyer le code OTP"}
-              </button>
-            </motion.div>
-          </motion.form>
-        </motion.div>
-      </div>
+              <RefreshCw
+                size={16}
+                className={`mr-1 ${resendDisabled ? "animate-spin" : ""}`}
+              />
+              {resendDisabled
+                ? `Réessayer dans ${countdown}s`
+                : "Renvoyer le code OTP"}
+            </button>
+          </motion.div>
+        </motion.form>
+      </motion.div>
+    </div>
+  );
+};
+
+// Main component that uses Suspense
+const VerificationOTP = () => {
+  return (
+    <>
+      <Navbar />
+      <Suspense fallback={<VerificationOTPLoading />}>
+        <VerificationOTPContent />
+      </Suspense>
     </>
   );
 };
