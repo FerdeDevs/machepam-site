@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { KeyRound, RefreshCw } from 'lucide-react';
 import Navbar from '@/components/navbar';
@@ -13,6 +14,8 @@ const VerificationOTP = () => {
   const [resendDisabled, setResendDisabled] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const email = searchParams.get('email');
 
   // Handle OTP input change
   const handleChange = (element, index) => {
@@ -74,12 +77,15 @@ const VerificationOTP = () => {
       const response = await fetch(`https://machepam.onrender.com/api/users/client/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ otp: otpValue }),
+        body: JSON.stringify({
+          email: email,
+          otp: otpValue  // Changed from otpCode to otpValue
+        }),
       });
 
       if (response.ok) {
         toast.success('Vérification réussie !');
-        router.push('/');
+        router.push('/login');
       } else {
         const data = await response.json();
         toast.error(data.message || 'OTP invalide ou expiré');
@@ -99,6 +105,7 @@ const VerificationOTP = () => {
     try {
       // Replace with your API endpoint for resending OTP
       const response = await fetch(`http://localhost:5000/api/users/client/resend-otp`, {
+      // const response = await fetch(`https://machepam.onrender.com/api/users/client/resend-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // Add any required data like email or phone
@@ -170,7 +177,7 @@ const VerificationOTP = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
             >
-              Veuillez entrer le code à 6 chiffres envoyé à votre appareil
+              Veuillez entrer le code à 6 chiffres envoyé à <span className='text-orange-600'>{email}</span> 
             </motion.p>
           </div>
 

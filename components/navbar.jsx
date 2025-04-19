@@ -29,7 +29,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   
   // Création d'un tableau pour simuler l'état isSeller
-  const [isSeller] = React.useState(false);
+  const [isSeller] = React.useState(true);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -93,7 +93,39 @@ const Navbar = () => {
           </button>
         )}
       </motion.div>
-
+      {/* Mobile User Button with Animation */}
+            <motion.div 
+              className="flex items-center md:hidden gap-3"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+                {isSeller && (
+          <button 
+            // onClick={() => router.push('/seller')} 
+            className={`text-xs border border-gray-200 px-4 py-1.5 rounded-full cursor-pointer hover:border-gray-300 transition-all hover:bg-gray-100 ${pathname === '/seller' ? 'text-orange-600 border-orange-600' : ''}`}
+          >
+            Boutique 🛍️
+          </button>  )}
+              <motion.button 
+                onClick={()=>router.push('/login')}
+                className="flex items-center gap-2 hover:text-gray-900 transition"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <User className="w-4 h-4" />
+                {user ? (
+                  <motion.span 
+                    className="max-w-[120px] truncate"
+                    initial={{ opacity: 0, x: -5 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1, duration: 0.2 }}
+                  >
+                    {user.email}
+                  </motion.span>
+                ) : "Connexion"}
+              </motion.button>
+            </motion.div>
       {/* User Profile with Dropdown */}
       <motion.div 
         className="hidden md:flex items-center gap-4 relative"
@@ -103,7 +135,6 @@ const Navbar = () => {
         ref={dropdownRef}
       >
         <button 
-        // onPress={()=>router.push('/login')}
           onClick={() => user ? setIsDropdownOpen(!isDropdownOpen) : router.push('/login')} 
           className="flex items-center gap-2 hover:text-gray-900 transition"
         >
@@ -187,74 +218,7 @@ const Navbar = () => {
           )}
         </AnimatePresence>
 
-        {/* Mobile Dropdown - Apply the same animations */}
-        <AnimatePresence>
-          {isDropdownOpen && user && (
-            <motion.div 
-              className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50"
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              transition={{ 
-                duration: 0.2,
-                type: "spring",
-                stiffness: 300,
-                damping: 20
-              }}
-            >
-              <motion.div 
-                className="p-3 border-b border-gray-100"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.2 }}
-              >
-                <p className="text-sm font-medium text-gray-900 truncate">{user.email}</p>
-                {user.role && <p className="text-xs text-gray-500">Rôle: {user.role}</p>}
-              </motion.div>
-              
-              <div className="py-1">
-                {[
-                  { icon: <User className="w-4 h-4" />, text: "Mon profil", path: "/profile", delay: 0.15 },
-                  { icon: <CreditCard className="w-4 h-4" />, text: "Mes cartes", path: "/cards", delay: 0.2 },
-                  { icon: <Heart className="w-4 h-4" />, text: "Favoris", path: "/favorites", delay: 0.25 },
-                  { icon: <Settings className="w-4 h-4" />, text: "Paramètres", path: "/settings", delay: 0.3 }
-                ].map((item, index) => (
-                  <motion.button 
-                    key={index}
-                    onClick={() => {
-                      setIsDropdownOpen(false);
-                      router.push(item.path);
-                    }}
-                    className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors text-left"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: item.delay, duration: 0.2 }}
-                    whileHover={{ x: 5 }}
-                  >
-                    {item.icon}
-                    {item.text}
-                  </motion.button>
-                ))}
-              </div>
-              
-              <motion.div 
-                className="py-1 border-t border-gray-100"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.35, duration: 0.2 }}
-              >
-                <motion.button 
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left"
-                  whileHover={{ x: 5, backgroundColor: "rgba(254, 226, 226, 0.5)" }}
-                >
-                  <LogOut className="w-4 h-4" />
-                  Déconnexion
-                </motion.button>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      
       </motion.div>
     </motion.nav>
   );

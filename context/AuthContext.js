@@ -69,7 +69,7 @@ export function AuthProvider({ children }) {
       };
   
       if (userData.role === 'admin') {
-        toast.error('La connexion administrateur n\'est pas autorisée ici.');
+        toast.info('La connexion administrateur n\'est pas autorisée ici.');
         throw new Error('La connexion administrateur n\'est pas autorisée');
       }
       

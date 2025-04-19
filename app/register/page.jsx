@@ -108,11 +108,10 @@ const RegisterPage = () => {
                     id="firstName"
                     name="firstName"
                     type="text"
-                    required
                     value={formData.firstName}
                     onChange={handleChange}
                     className="text-sm pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                    placeholder="Prénom"
+                 
                   />
                 </div>
               </div>
@@ -128,11 +127,10 @@ const RegisterPage = () => {
                     id="lastName"
                     name="lastName"
                     type="text"
-                    required
                     value={formData.lastName}
                     onChange={handleChange}
                     className="text-sm pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                    placeholder="Nom"
+                  
                   />
                 </div>
               </div>
@@ -152,11 +150,10 @@ const RegisterPage = () => {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  required
                   value={formData.email}
                   onChange={handleChange}
                   className="text-sm pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                  placeholder="exemple@email.com"
+          
                 />
               </div>
             </div>
@@ -219,11 +216,10 @@ const RegisterPage = () => {
                     name="password"
                     type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
-                    required
                     value={formData.password}
                     onChange={handleChange}
                     className="text-sm pl-10 pr-12 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                    placeholder="••••••••"
+                   
                   />
                   <button
                     type="button"
@@ -251,11 +247,10 @@ const RegisterPage = () => {
                     name="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     autoComplete="new-password"
-                    required
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     className="text-sm pl-10 pr-12 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                    placeholder="••••••••"
+               
                   />
                   <button
                     type="button"

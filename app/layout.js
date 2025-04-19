@@ -13,57 +13,28 @@ const outfit = Outfit({
 
 export const metadata = {
   title: "MachePam",
-  description: "Your personal medication assistant - Track, manage and get reminders for your medications",
-  keywords: [
-    "medication tracker",
-    "pill reminder",
-    "medication management",
-    "health app",
-    "medical assistant",
-    "prescription tracker"
-  ],
-  authors: [
-    { name: "MachePam Team" }
-  ],
-  openGraph: {
-    title: "MachePam",
-    description: "Your personal medication assistant",
-    type: "website",
-    url: "https://machepam.com",
-    siteName: "MachePam",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "MachePam",
-    description: "Your personal medication assistant",
-    creator: "@machepam"
-  },
-  robots: {
-    index: true,
-    follow: true
-  },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1
-  },
-  // icons: {
-  //   icon: "/favicon.ico",
-  //   apple: "/apple-touch-icon.png"
-  // }
+  description:
+    "Your personal medication assistant - Track, manage and get reminders for your medications",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        {/* Head content */}
-      </head>
+      <head>{/* Head content */}</head>
       <body className={`${outfit.className} antialiased`}>
         <AuthProvider>
           {children}
           <ClientBottomNav />
-          <ToastContainer position="top-right" autoClose={2000} />
+          <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </AuthProvider>
       </body>
     </html>

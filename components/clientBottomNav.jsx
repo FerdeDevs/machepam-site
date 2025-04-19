@@ -4,7 +4,7 @@ import BottomNav from '@/components/bottomNav';
 
 export default function ClientBottomNav() {
   const pathname = usePathname();
-  const hideOnPaths = ['/register', '/login'];
+  const hideOnPaths = ['/register', '/login','/verification-otp'];
   
   if (hideOnPaths.includes(pathname)) {
     return null;

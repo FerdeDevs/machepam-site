@@ -28,12 +28,17 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
+      if(!identifier.trim() || !password.trim()){
+        toast.info('Les champs ne doivent pas être vides');
+        setIsLoading(false);
+        return;
+      }
       await login(identifier, password);
       router.push('/');
     } catch (error) {
 
       if (error.isVerificationRequired) {
-        router.push('/verification-otp');
+        router.push(`/verification-otp?email=${error.email}`);
       }
       console.error('Login error:', error);
     } finally {
@@ -117,11 +122,10 @@ const LoginPage = () => {
                     name="emailOrPhone"
                     type="text"
                     autoComplete="email"
-                    required
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
                     className="text-sm pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                    placeholder="exemple@email.com"
+      
                   />
                 </div>
               </div>
@@ -139,11 +143,10 @@ const LoginPage = () => {
                     name="password"
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
-                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="text-sm pl-10 pr-12 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                    placeholder="••••••••"
+                    placeholder=""
                   />
                   <button
                     type="button"
