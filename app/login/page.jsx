@@ -1,39 +1,63 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/navbar';
+import { useAuth } from '@/context/AuthContext';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
   const router = useRouter();
+  const { login, user, isLoading: authLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    emailOrPhone: '',
-    password: ''
-  });
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  // Redirect if user is already logged in
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate authentication process
-    setTimeout(() => {
-      setIsLoading(false);
-      // Redirect to home page after successful login
+
+    try {
+      await login(identifier, password);
       router.push('/');
-    }, 1500);
+    } catch (error) {
+
+      if (error.isVerificationRequired) {
+        router.push('/verification-otp');
+      }
+      console.error('Login error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // Display user email if logged in
+  if (user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="p-8 rounded-xl border border-gray-100 max-w-md w-full relative z-10 backdrop-blur-2xl bg-white/50">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-4">Connecté</h1>
+          <p className="text-gray-700">Vous êtes connecté en tant que: <span className="font-semibold">{user.email}</span></p>
+          <button
+            onClick={() => router.push('/')}
+            className="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+          >
+            Aller à l'accueil
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -46,15 +70,15 @@ const LoginPage = () => {
           <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
           <div className="absolute -bottom-14 right-20 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         </div>
-        
-        <motion.div 
+
+        <motion.div
           className="p-8 rounded-xl border border-white max-w-md w-full relative z-10 backdrop-blur-2xl bg-white/50"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <div className="text-center mb-8">
-            <motion.h1 
+            <motion.h1
               className="text-2xl font-semibold text-gray-800"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -62,7 +86,7 @@ const LoginPage = () => {
             >
               Connexion
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-gray-500 mt-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -72,7 +96,7 @@ const LoginPage = () => {
             </motion.p>
           </div>
 
-          <motion.form 
+          <motion.form
             onSubmit={handleSubmit}
             className="space-y-6"
             initial={{ opacity: 0 }}
@@ -94,8 +118,8 @@ const LoginPage = () => {
                     type="text"
                     autoComplete="email"
                     required
-                    value={formData.emailOrPhone}
-                    onChange={handleChange}
+                    value={identifier}
+                    onChange={(e) => setIdentifier(e.target.value)}
                     className="text-sm pl-10 pr-4 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
                     placeholder="exemple@email.com"
                   />
@@ -116,8 +140,8 @@ const LoginPage = () => {
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
                     required
-                    value={formData.password}
-                    onChange={handleChange}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="text-sm pl-10 pr-12 py-2 w-full bg-gray-50 border border-gray-300 rounded-full focus:ring focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
                     placeholder="••••••••"
                   />
@@ -137,18 +161,6 @@ const LoginPage = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              {/* <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  Se souvenir de moi
-                </label>
-              </div> */}
-
               <div className="text-sm">
                 <Link href="/forgot-password" className="font-medium text-orange-600 hover:text-orange-500">
                   Mot de passe oublié?
@@ -172,7 +184,7 @@ const LoginPage = () => {
             </div>
           </motion.form>
 
-          <motion.div 
+          <motion.div
             className="mt-6 text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -187,7 +199,7 @@ const LoginPage = () => {
           </motion.div>
         </motion.div>
       </div>
-      
+
       {/* Add animation keyframes for the blob animation */}
       <style jsx global>{`
         @keyframes blob {

@@ -1,6 +1,8 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import ClientBottomNav from "@/components/clientBottomNav";
+import { AuthProvider } from "@/context/AuthContext";
+import { ToastContainer } from "react-toastify";
 
 const outfit = Outfit({
   weight: ["400", "500", "600", "700"],
@@ -55,13 +57,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        
+        {/* Head content */}
       </head>
-      <body
-      className={`${outfit.className} antialiased`}
-      >
-        {children}
-        <ClientBottomNav />
+      <body className={`${outfit.className} antialiased`}>
+        <AuthProvider>
+          {children}
+          <ClientBottomNav />
+          <ToastContainer position="top-right" autoClose={2000} />
+        </AuthProvider>
       </body>
     </html>
   );

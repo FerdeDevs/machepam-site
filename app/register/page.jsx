@@ -63,7 +63,7 @@ const RegisterPage = () => {
         </div>
         
         <motion.div 
-          className="p-8 rounded-xl border border-white max-w-2xl w-full relative z-10 backdrop-blur-2xl bg-white/50"
+          className="p-8 rounded-xl border border-gray-100 max-w-2xl w-full relative z-10 backdrop-blur-2xl bg-white/50"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
