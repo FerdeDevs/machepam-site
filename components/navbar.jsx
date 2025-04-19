@@ -199,9 +199,12 @@ const Navbar = () => {
                 <p className="text-sm font-medium text-gray-900 truncate">
                   {user.email}
                 </p>
-                <p className="text-xs text-red-600">
+                <button
+                  onClick={() => router.push("/profile")}
+                  className="text-xs text-red-600 -mt-4 hover:underline"
+                >
                   Votre profile n'est pas à jour
-                </p>
+                </button>
               </motion.div>
 
               <div className="py-1">
